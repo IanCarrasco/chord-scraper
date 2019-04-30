@@ -21,8 +21,6 @@ def get_chord_url(song):
 
     soup = BeautifulSoup(search_results.text, "html.parser")
 
-    print(soup)
-
     return soup.find('cite').text
 
 
@@ -30,7 +28,7 @@ def get_chords(songs):
     PROXY = "http://iansee:qweazsxdc@us-wa.proxymesh.com:31280" # IP:PORT or HOST:PORT
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
-    options.add_argument('--proxy-server=%s' % PROXY)
+    #options.add_argument('--proxy-server=%s' % PROXY)
 
 
     #Initialize Headless Selenium Instance
@@ -49,13 +47,14 @@ def get_chords(songs):
                 chords = []
                 for match in soup.findAll('span', attrs={'class':'B24oE _1r_2U'}):
                     chords.append(match.string)
-                
+
                 if len(chords) > 0:
                     dataframe.append([song[0].artist, song[0].title, song[1], chords])
 
-            if idx % 50 == 0:
+            if len(dataframe) % 50 == 0:
                 df = pd.DataFrame(dataframe, columns=["Artist", "Track", "Year", "Chords"])
                 df.to_csv('./chords1.csv', index=False)
+        
         except Exception as e:
             print(str(e))
 
