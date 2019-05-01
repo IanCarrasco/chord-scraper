@@ -38,7 +38,7 @@ def get_chords(songs):
 
     dataframe = []
 
-    for idx, song in tqdm(enumerate(songs[6100:])):
+    for idx, song in tqdm(enumerate(songs[6500:])):
         try:
             chord_url = get_chord_url(song[0].title, song[0].artist)
             print(chord_url)
@@ -80,5 +80,14 @@ df = get_chords(songs)
 
 #%%
 
+df = pd.read_csv('./chords1.csv')
+
+df.drop_duplicates(inplace=True)
+
+#%%
+df.head()
+
+#%%
+df.to_csv('./chords.csv', index=False)
 
 #%%
